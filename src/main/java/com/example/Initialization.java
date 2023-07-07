@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Initialization {
-    
+
     private Connection connect = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
@@ -52,7 +52,7 @@ public class Initialization {
     public void insertIntoDataBase() {
         try {
             connect();
-            query="INSERT into clients (client_id,name,address,city,state,phone)"+"values(?,?,?,?,?,?)";
+            query = "INSERT into clients (client_id,name,address,city,state,phone)" + "values(?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, 13);
@@ -65,51 +65,54 @@ public class Initialization {
             close();
         } catch (SQLException e) {
             System.err.println("SQL Excepetion: " + e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e);
-            System.err.println("Error message: "+e.getMessage());
-            System.err.println("error trace: "+e.getStackTrace());
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("error trace: " + e.getStackTrace());
         }
     }
 
-    public void updateDataBase(int id, String name){
+    public void updateDataBase(int id, String name) {
         connect();
-        
-        query = "UPDATE clients SET name='"+name+"' WHERE client_id ="+id;
+
         try {
-			statement.executeUpdate(query);
-		} catch (SQLException e) {
-			System.err.println("Cannot update Name field in respective id :"+e);
-		}
+            query = "UPDATE clients SET name = ? WHERE client_id = ?";
+            PreparedStatement statement = connect.prepareStatement(query);
+            statement.setString(1, name);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Cannot update Name field in respective id :" + e);
+        }
         close();
     }
 
-    public void deleteInDataBase(int id){
+    public void deleteInDataBase(int id) {
         connect();
-        query="DELETE From clients WHERE client_id = "+id;
+        query = "DELETE From clients WHERE client_id = " + id;
         try {
-			statement.executeUpdate(query);
-		} catch (SQLException e) {
-			System.err.println("SQL Exception: couldn't complete delete operation");
-		}
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: couldn't complete delete operation");
+        }
         close();
     }
 
     private void close() {
         try {
-            if(resultSet!=null){
+            if (resultSet != null) {
                 resultSet.close();
             }
-            if(statement!=null){
+            if (statement != null) {
                 statement.close();
             }
-            if(connect!=null){
+            if (connect != null) {
                 connect.close();
             }
         } catch (SQLException e) {
             System.out.println(" printing from SQL Exception: " + e.getMessage());
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
 }

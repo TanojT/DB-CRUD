@@ -21,7 +21,7 @@ public class Operations {
                 System.out.println("Enter id to update name");
                 id = scan.nextInt();
                 System.out.println("Enter name to update in respective id");
-                scan.next();
+                scan.nextLine();
                 name = scan.nextLine();
                 initial.updateDataBase(id,name);
             } else if (operation.equalsIgnoreCase("d")) {

@@ -1,0 +1,8 @@
+2023-07-10 19:26:47,769 FATAL c.e.Initialization [main] Sql Exception : Cannot load connection class because of underlying exception: com.mysql.cj.exceptions.WrongArgumentException: Failed to parse the host:port pair 'localhost:l3306'.
+2023-07-10 20:34:57,791 FATAL c.e.Initialization [main] couldn't find properties file: initialization.properties (The system cannot find the file specified)
+2023-07-10 20:35:31,263 FATAL c.e.Initialization [main] couldn't find properties file: initialization.properties (The system cannot find the file specified)
+2023-07-10 20:35:57,909 FATAL c.e.Initialization [main] couldn't find properties file: initialization.properties (The system cannot find the file specified)
+2023-07-10 21:08:35,919 FATAL c.e.Initialization [main] couldn't find properties file: \resources\initialization.properties (The system cannot find the path specified)
+2023-07-10 21:10:42,139 FATAL c.e.Initialization [main] couldn't find properties file: src\resources\initialization.properties (The system cannot find the path specified)
+2023-07-10 21:10:55,843 FATAL c.e.Initialization [main] couldn't find properties file: src\resources\initialization.properties (The system cannot find the path specified)
+2023-07-10 21:12:15,972 FATAL c.e.Initialization [main] Sql Exception : Cannot load connection class because of underlying exception: com.mysql.cj.exceptions.WrongArgumentException: Failed to parse the host:port pair 'localhost:l3306'.

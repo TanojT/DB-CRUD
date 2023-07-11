@@ -1,11 +1,18 @@
 package com.example;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Initialization {
 
@@ -14,18 +21,25 @@ public class Initialization {
     private ResultSet resultSet = null;
     private String query = "";
 
-    public void connect() {
+    static Logger logger = LogManager.getLogger(Initialization.class);
+    static Properties prop =new Properties();
+
+    public void connect(){
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/sql_invoicing", "root",
-                    "mysqlroot@2023");
+            prop.load(new FileInputStream("src/main/resources/initialization.properties"));
+            Class.forName(prop.getProperty("driverAddress"));
+            connect = DriverManager.getConnection(prop.getProperty("db.url"), prop.getProperty("db.userId"),
+                    prop.getProperty("db.password"));
             statement = connect.createStatement();
         } catch (ClassNotFoundException e) {
-            System.out.println("JDBC driver initialization issue ");
+            logger.fatal("JDBC driver initialization issue ");
         } catch (SQLException e) {
-            System.out.println("Sql Exception : " + e.getMessage());
+            logger.fatal("Sql Exception : " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            logger.fatal("couldn't find properties file: "+e.getMessage());
+        } catch (IOException e) {
+            logger.fatal("I/O exception issue with properties file: "+e.getMessage());
         }
-
     }
 
     public void readDataBase() {
@@ -44,7 +58,7 @@ public class Initialization {
                 System.out.println("Phone Number: " + phone);
             }
         } catch (SQLException e) {
-            System.out.println("SQL Exception: " + e.getMessage());
+            logger.error("SQL Exception: " + e.getMessage());
         }
         close();
     }
@@ -64,11 +78,11 @@ public class Initialization {
             preparedStatement.execute();
             close();
         } catch (SQLException e) {
-            System.err.println("SQL Excepetion: " + e.getMessage());
+            logger.error("SQL Excepetion: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println(e);
-            System.err.println("Error message: " + e.getMessage());
-            System.err.println("error trace: " + e.getStackTrace());
+            logger.error(e);
+            logger.error("Error message: " + e.getMessage());
+            logger.error("error trace: " + e.getStackTrace());
         }
     }
 
@@ -82,7 +96,7 @@ public class Initialization {
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Cannot update Name field in respective id :" + e);
+            logger.error("Cannot update Name field in respective id :" + e);
         }
         close();
     }
@@ -93,7 +107,7 @@ public class Initialization {
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            System.err.println("SQL Exception: couldn't complete delete operation");
+            logger.error("SQL Exception: couldn't complete delete operation");
         }
         close();
     }
@@ -110,7 +124,7 @@ public class Initialization {
                 connect.close();
             }
         } catch (SQLException e) {
-            System.out.println(" printing from SQL Exception: " + e.getMessage());
+            logger.error(" printing from SQL Exception: " + e.getMessage());
         } catch (Exception e) {
 
         }
